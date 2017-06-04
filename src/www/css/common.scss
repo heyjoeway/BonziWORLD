@@ -1,0 +1,24 @@
+body, html, {
+	margin: 0;
+	padding: 0;
+	font-size: 16px;
+}
+
+body, body * {
+	font-family: "Tahoma", sans-serif;
+}
+
+input[type="text"] {
+	background-color: #fff;
+	border: 1px inset #AAA;
+	color: #000;
+}
+
+.xp_bubble {
+	background: #ffffe1;
+	color: #000;
+	-webkit-border-radius: 9px;
+	-moz-border-radius: 9px;
+	border-radius: 9px;
+	border: #000000 solid 1px;
+}

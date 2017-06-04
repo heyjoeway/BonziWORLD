@@ -1,0 +1,530 @@
+class Bonzi {
+	constructor(id, userPublic) {
+
+		// ========================================================================
+		// VARIABLES/CONSTANTS
+		// ========================================================================
+		this.userPublic = userPublic || {
+			name: "BonziBUDDY",
+			color: "purple",
+			speed: 175,
+			pitch: 50
+		};
+		this.color = this.userPublic.color;
+		this.colorPrev;
+		this.data = window.BonziData;
+
+		this.drag = false;
+		this.dragged = false;
+
+		this.eventQueue = [];
+
+		this.eventRun = true;
+		this.event = null;
+
+		this.willCancel = false;
+
+		this.run = true;
+
+		this.mute = false;
+
+		this.eventTypeToFunc = {
+			"anim": "updateAnim",
+			"html": "updateText",
+			"text": "updateText",
+			"idle": "updateIdle",
+			"add_random": "updateRandom"
+		};
+
+		// ========================================================================
+		// ASSIGN ID
+		// http://stackoverflow.com/a/105074
+		// ========================================================================
+
+		if (typeof id == "undefined") {
+			this.id = s4() + s4();
+		} else this.id = id;
+
+		this.rng = new Math.seedrandom((this.seed || this.id) || Math.random());
+
+		// ========================================================================
+		// HTML POPULATION
+		// ========================================================================
+		this.selContainer = "#content";
+		this.$container	= $(this.selContainer);
+		
+		var bonziSpot = BonziHandler.oneCanvas ?  
+			"<div class='bonzi_placeholder'></div>" :
+			"<canvas></canvas>";
+
+		this.$container.append(`
+			<div id='bonzi_${this.id}' class='bonzi'>
+				<div class='bonzi_name'></div>
+					${bonziSpot}
+				<p style='display:none'></p>
+			</div>
+		`);
+
+		this.selElement = "#bonzi_" + this.id;
+		this.selDialog = this.selElement + " > p";
+		this.selNametag = this.selElement + " > .bonzi_name";
+
+		if (BonziHandler.oneCanvas) {
+			this.selCanvas = this.selElement + " > .bonzi_placeholder";
+			$(this.selCanvas)
+		 		.width(this.data.size.x)
+		 		.height(this.data.size.y);
+		} else {
+			this.selCanvas = this.selElement + " > canvas";
+			$(this.selCanvas)
+		 		.attr("width", this.data.size.x)
+		 		.attr("height", this.data.size.y);
+		}
+
+		this.$element	= $(this.selElement);
+		this.$canvas	= $(this.selCanvas);
+		this.$dialog	= $(this.selDialog);
+		this.$nametag	= $(this.selNametag);
+
+		this.updateName();
+
+		$.data(this.$element[0], "parent", this);
+
+		// ========================================================================
+		// CREATEJS INIT
+		// ========================================================================
+		if (!BonziHandler.oneCanvas) {
+			this.stage = new createjs.Stage(this.$canvas[0]);
+		}
+	 	this.updateSprite(true);
+
+		// ========================================================================
+		// EVENTS
+		// ========================================================================
+		this.generate_event = function(a, b, c) { // Selector, event, function
+			a[b](e => { this[c](e); });
+		};
+
+		this.generate_event(
+	 		this.$canvas,
+			"mousedown",
+			"mousedown"
+		);
+		
+		this.generate_event(
+			$(window),
+			"mousemove",
+			"mousemove"
+		);
+		
+		this.generate_event(
+			$(window),
+			"mouseup",
+			"mouseup"
+		);
+
+		var coords = this.maxCoords();
+		this.x = coords.x * this.rng();
+		this.y = coords.y * this.rng();
+		this.move();
+
+		// ========================================================================
+		// MENU
+		// ========================================================================
+
+		$.contextMenu({
+			selector: this.selCanvas,
+			build: ($trigger, e) => {
+				return { items: {
+					"cancel": {
+						name: "Cancel",
+						callback: () => { this.cancel(); }
+					},
+					"mute": {
+						name: () => this.mute ? "Unmute" : "Mute",
+						callback: () => {
+							this.cancel();
+							this.mute = !this.mute;
+						}
+					},
+					"asshole": {
+						name: "Call an Asshole",
+						callback: () => {
+							socket.emit("command", {
+								list: ["asshole", this.userPublic.name]
+							});
+						}
+					}
+				} };
+			},
+			animation: {
+				duration: 175,
+				show: 'fadeIn',
+				hide: 'fadeOut'
+			}
+		});
+
+		// ========================================================================
+		// UPDATE LOOP
+		// ========================================================================
+
+		this.needsUpdate = false;
+
+		this.runSingleEvent([{
+			type: "anim",
+			anim: "surf_intro",
+			ticks: 30
+		}]);
+	}
+
+	eventMake(list) {
+		return {
+			list: list,
+			index: 0,
+			timer: 0,
+			cur: function() { return this.list[this.index] }
+		};
+	}
+
+	mousedown(e) {
+		if (e.which == 1) {
+			this.drag = true;
+			this.dragged = false;
+			this.drag_start = {
+				x: e.pageX - this.x,
+				y: e.pageY - this.y
+			};
+		}
+	}
+
+	mousemove(e) {
+		if (this.drag) {
+			this.move(
+				e.pageX - this.drag_start.x,
+				e.pageY - this.drag_start.y
+			);
+			this.dragged = true;
+		}
+	}
+
+	move(x, y) {
+		if (arguments.length !== 0) {
+			this.x = x;
+			this.y = y;
+		}
+		var max = this.maxCoords();
+		this.x = Math.min(
+			Math.max(0, this.x),
+			max.x
+		);
+		this.y = Math.min(
+			Math.max(0, this.y),
+			max.y
+		);
+		this.$element.css({
+			"marginLeft": this.x,
+			"marginTop": this.y
+		});
+
+		if (BonziHandler.oneCanvas) {
+			this.sprite.x = this.x;
+			this.sprite.y = this.y;
+			BonziHandler.needsUpdate = true;
+		}
+
+		this.updateDialog();
+	}
+
+	mouseup(e) {
+		if (!this.dragged && this.drag)
+			this.cancel();
+
+		this.drag = false;
+		this.dragged = false;
+	}
+
+	runSingleEvent(list) {
+		if (!this.mute)
+			this.eventQueue.push(this.eventMake(list));
+	}
+
+	cancel() {
+		this.$dialog.html("").hide();
+		this.stopSpeaking();
+		this.eventQueue = [this.eventMake([{ type: "idle" }])];
+	}
+
+	retry() {
+		this.$dialog.html("").hide();
+		this.stopSpeaking();
+		this.event.timer = 0;
+	}
+
+	stopSpeaking() {
+		try {
+			BonziHandler.stop(this.speakID);
+		} catch(e) {}
+	}
+
+	cancelQueue() {
+		this.willCancel = true;
+	}
+
+	updateAnim() {
+		if (this.event.timer === 0)
+			this.sprite.gotoAndPlay(this.event.cur().anim);
+		this.event.timer++;
+		(BonziHandler.oneCanvas ? BonziHandler : this)
+			.needsUpdate = true;
+		if (this.event.timer >= this.event.cur().ticks)
+			this.eventNext();
+	}
+
+	updateText() {
+		if (this.event.timer === 0) {
+			this.$dialog.css("display", "block");
+			this.event.timer = 1;
+			this.talk(
+				this.event.cur().text,
+				this.event.cur().say,
+				true
+			);
+		}
+		
+		if (this.$dialog.css("display") == "none")
+			this.eventNext();
+	}
+
+	updateIdle() {
+		var goNext =
+			(this.sprite.currentAnimation == "idle") &&
+			(this.event.timer === 0);
+
+		goNext = goNext ||
+			this.data.pass_idle.indexOf(
+				this.sprite.currentAnimation
+			) != -1;
+
+		if (goNext)
+			this.eventNext();
+		else {
+			if (this.event.timer === 0) {
+				this.tmp_idle_start =
+					this.data.to_idle[this.sprite.currentAnimation];
+				this.sprite.gotoAndPlay(this.tmp_idle_start);
+				this.event.timer = 1;
+			}
+			
+			if (this.tmp_idle_start != this.sprite.currentAnimation)
+				if (this.sprite.currentAnimation == "idle")
+					this.eventNext();
+
+			(BonziHandler.oneCanvas ? BonziHandler : this)
+				.needsUpdate = true;
+		}
+	}
+
+	updateRandom() {
+		var add = this.event.cur().add;
+		var index = Math.floor(add.length * this.rng());
+
+		var e = this.eventMake(add[index]);
+		this.eventNext();
+		this.eventQueue.unshift(e);
+	}
+
+	update() {
+		if (!this.run) return; 
+		// ========================================================================
+		// EVENTS
+		// "the fun part"
+		// ========================================================================
+
+		if ((this.eventQueue.length !== 0) && (this.eventQueue[0].index >= this.eventQueue[0].list.length))
+			this.eventQueue.splice(0,1);
+
+		this.event = this.eventQueue[0];
+
+		if ((this.eventQueue.length !== 0) && this.eventRun) {
+			var eventType = this.event.cur().type;
+			try {
+				this[this.eventTypeToFunc[eventType]]();
+			} catch(e) { this.event.index++; }
+		}
+
+		if (this.willCancel) {
+			this.cancel();
+			this.willCancel = false;
+		}
+
+		if (this.needsUpdate) {
+			this.stage.update();
+			this.needsUpdate = false;
+		}
+	}
+
+	eventNext() {
+		this.event.timer = 0;
+		this.event.index += 1;
+	}
+
+	talk(text, say, allowHtml) {
+		allowHtml = allowHtml || false;
+		text = replaceAll(text, "{NAME}", this.userPublic.name);
+		text = replaceAll(text, "{COLOR}", this.color);
+		if (typeof say !== "undefined") {
+			say = replaceAll(say, "{NAME}", this.userPublic.name);
+			say = replaceAll(say, "{COLOR}", this.color);
+		} else {
+			say = text.replace("&gt;", "");
+		}
+
+		text = linkify(text);
+		var greentext = 
+			(text.substring(0, 4) == "&gt;") ||
+			(text[0] == ">");
+
+		this.$dialog
+			[allowHtml ? "html" : "text"](text)
+			[greentext ? "addClass" : "removeClass"]("bubble_greentext")
+			.removeClass("bubble_autowidth")
+			.css("display", "block");
+
+		// THANK YOU ESPEAK FOR FIXING ALL OF MESPEAK'S BROKEN BULLSHIT
+		// Sorta
+
+		this.stopSpeaking();
+
+		this.speakID = BonziHandler.speak(
+			say,
+			this.userPublic.speed,
+			this.userPublic.pitch,
+			(success) => {
+				if (success)
+					this.$dialog.html("").hide();
+			}
+		);
+	}
+
+	joke() { this.runSingleEvent(this.data.event_list_joke); }
+
+	fact() { this.runSingleEvent(this.data.event_list_fact); }
+
+	exit(callback) {
+		this.runSingleEvent([{
+			type: "anim",
+			anim: "surf_away",
+			ticks: 30
+		}]);
+		setTimeout(callback, 2000);
+	}
+
+	deconstruct() {
+		this.stopSpeaking();
+		this.run = false;
+		this.$element.remove();
+		if (BonziHandler.oneCanvas)
+			BonziHandler.stage.removeChild(this.sprite);
+		else
+			delete this.stage;
+	}
+
+	updateName() { this.$nametag.text(this.userPublic.name); }
+
+	youtube(vid) {
+		if (!this.mute) {
+			var tag = isChromeApp ? "webview" : "iframe";
+			this.$dialog
+				.addClass("bubble_autowidth")
+				.html(`
+					<${tag} type="text/html" width="480" height="270" 
+					src="https://www.youtube.com/embed/${vid}?autoplay=1" 
+					style="width:480px;height:270px"
+					frameborder="0"
+					allowfullscreen="allowfullscreen"
+					mozallowfullscreen="mozallowfullscreen"
+					msallowfullscreen="msallowfullscreen"
+					oallowfullscreen="oallowfullscreen"
+					webkitallowfullscreen="webkitallowfullscreen"
+					></${tag}>
+				`).show();
+		}
+	}
+
+	backflip(swag) {
+		var event = [{
+			type: "anim",
+			anim: "backflip",
+			ticks: 15
+		}];
+		if (swag) {
+			event.push({
+				type: "anim",
+				anim: "cool_fwd",
+				ticks: 30
+			});
+			event.push({
+				type: "idle"
+			});
+		}
+		this.runSingleEvent(event);
+	}
+
+	updateSprite(hide) {
+		var stage = BonziHandler.oneCanvas ? BonziHandler.stage : this.stage;
+		this.cancel();
+		stage.removeChild(this.sprite);
+		if (this.colorPrev != this.color) {
+			delete this.sprite;
+			this.sprite = new createjs.Sprite(
+				BonziHandler.spriteSheets[this.color],
+				hide ? "gone" : "idle"
+			);
+		}
+		this.sprite.x = 0;
+		this.sprite.y = 0;
+		stage.addChild(this.sprite);
+		this.move();
+	}
+
+	updateDialog() {
+		// ========================================================================
+		// DIALOG BOX
+		// ========================================================================
+		if (this.x < (this.$container.width() / 2) - (this.data.size.x / 2)) {
+			this.$dialog
+				.removeClass("bubble_rev")
+				.addClass("bubble");
+		} else {
+			this.$dialog
+				.removeClass("bubble")
+				.addClass("bubble_rev");
+		}
+	}
+
+	maxCoords() {
+		return {
+			x: this.$container.width() - this.data.size.x,
+			y: this.$container.height() - this.data.size.y - $("#chat_bar").height()
+		};
+	}
+
+	asshole(target) {
+		this.runSingleEvent(
+			[{
+				type: "text",
+				text: "Hey, " + target + "!"
+			}, {
+				type: "text",
+				text: "You're a fucking asshole!",
+				say: "your a fucking asshole!"
+			}, {
+				type: "anim",
+				anim: "grin_fwd",
+				ticks: 15
+			}, {
+				type: "idle"
+			}]
+		);
+	}
+}

@@ -1,0 +1,21 @@
+.message_cont {
+	position: absolute;
+	width: 100%;
+	max-width: 512px;
+	height: auto;
+	max-height: 100%;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	-webkit-transform: translate(-50%, -50%);
+
+	padding: 32px;
+	box-sizing: border-box;
+	overflow: auto;
+
+    @extend .xp_dialog;
+}
+
+#page_error, #page_ban, #page_unsupp {
+	background-color: rgba(0,0,0,0.5);
+}

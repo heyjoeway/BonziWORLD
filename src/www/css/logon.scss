@@ -1,0 +1,130 @@
+#page_login {
+	background-color: #8b5adc;
+	background-image:
+		url("../img/logon/logo.png"),
+		url("../img/logon/top.png"),
+		url("../img/logon/bottom.png"),
+		url("../img/logon/topleft.png"),
+		url("../img/logon/divider.png");
+	background-position:
+		center,
+		top,
+		bottom,
+		top left,
+		center;
+	background-size:
+		auto,
+		100% 100px,
+		100% 122px,
+		auto,
+		1px 100%;
+	background-repeat: no-repeat;
+}
+
+#login_apps {
+	display: flex;
+	justify-content: center;
+	padding: 16px;
+	flex-wrap: wrap;
+}
+
+#login_card {
+	background-image: url("../img/logon/card.png");
+	width: 353px;
+	height: 70px;
+
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: 20px;
+	margin-top: -35px;
+	box-sizing: border-box;
+}
+
+#login_error {
+	@extend .xp_textbox;
+	top: 100%;
+	position: absolute;
+	margin-top: 8px;
+	color: #d03b3b;
+	font-size: 12px;
+	padding: 8px;
+}
+
+#login_readme {
+	@extend .xp_textbox;
+	color: #444;
+	padding: 12px;
+	bottom: 24%;
+	// width: 275px;
+	width: auto;
+	transform: translateX(-50%);
+	-webkit-transform: translateX(-50%);
+	text-align: center;
+	left: 50%;
+	// margin-left: -149px;
+}
+
+#login_name, #login_room {
+	@extend .xp_textbox;
+	width: 160px;
+    box-sizing: border-box;
+}
+
+#login_name {
+	height: 28px;
+	top: 8px;
+	left: 16px;
+	font-size: 14px;
+}
+
+#login_room {
+	height: 18px;
+	top: 43px;
+	left: 16px;
+	font-size: 12px;
+}
+
+#login_go {
+	left: 185px;
+	top: 24px;
+	position: absolute;
+
+	width: 20px;
+	height: 20px;
+	background-image: url("../img/logon/go.png");
+	background-size: 100%;
+	background-repeat: no-repeat;
+
+	&:hover {
+		background-position: 0 -20px;
+	}
+
+	&:active {
+		background-position: 0 -40px;
+	}
+}
+
+#login_load {
+	color: #fff;
+	font-weight: bold;
+	font-style: italic;
+	font-size: 35px;
+	letter-spacing: 2px;
+	text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+	position: absolute;
+	line-height: 100%;
+	height: 35px;
+	top: 50%;
+	left: 50%;
+	margin-left: 23px;
+}
+
+#login_version {
+	color: #fff;
+	position: absolute;
+	right: 16px;
+	bottom: 16px;
+	font-size: 16px;
+	text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}

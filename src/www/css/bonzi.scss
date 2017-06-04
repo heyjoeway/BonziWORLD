@@ -1,0 +1,122 @@
+$bonzi_width: 200px;
+$bonzi_height: 160px;
+
+#bonzi_canvas {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.bonzi {
+	position: fixed;
+	top: 0;
+	left: 0;
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+.bonzi > canvas, .bonzi_placeholder {
+	position: absolute;
+}
+
+.bubble, .bubble_rev {
+	position: absolute;
+	width: 170px;
+	padding: 12px;
+	top: 55px;
+
+	user-select: text;
+	-webkit-user-select: text;
+
+	@extend .xp_bubble;
+
+	// font-family: "Microsoft Sans Serif", sans-serif;
+	font-size: 14px;
+	font-smooth: never;
+	-webkit-font-smoothing : none;
+    position: absolute;
+
+    // https://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	-ms-word-break: break-all;
+	word-break: break-word;
+	-ms-hyphens: auto;
+	-moz-hyphens: auto;
+	-webkit-hyphens: auto;
+	hyphens: auto;
+	
+	&:after, &:before {
+		content: '';
+		position: absolute;
+		border-style: solid;
+		border-width: 4px 12px 4px 0;
+		display: block;
+		width: 0;
+		top: 9px;
+	}
+	
+	&:after {
+		border-color: transparent #ffffe1;
+		z-index: 1;
+	}
+	
+	&:before {
+		border-color: transparent #000000;
+		z-index: 0;
+	}
+}
+
+.bubble {
+    left: $bonzi_width - 20px;
+
+	&:after, &:before {
+		border-width: 4px 12px 4px 0;
+	}
+	
+	&:after {
+		left: -12px;
+	}
+	
+	&:before {
+		left: -13px;
+	}
+}
+
+.bubble_rev {
+	right: -20px;
+
+	&:after, &:before {
+		border-width: 4px 0 4px 12px;
+	}
+	
+	&:after {
+		right: -12px;
+	}
+	
+	&:before {
+		right: -13px;
+	}
+}
+
+.bubble_autowidth {
+	width: auto !important;
+}
+
+.bonzi_name {
+	border-style: solid;
+	border-width: 4px 12px 4px 0;
+	border-radius: 9px;
+	border: #000000 solid 1px;
+	padding: 8px;
+	position: absolute;
+	background: #ffffe1;
+	font-size: 12px;
+	color: #000;
+}
+
+.bubble_greentext {
+	color: #789922;
+}

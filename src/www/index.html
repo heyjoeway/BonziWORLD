@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>BonziWORLD</title>
+	<meta charset="utf-8" />
+	<meta content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+	<meta name="mobile-web-app-capable" content="yes" />
+
+	<link rel="stylesheet" type="text/css" href="./css/style.min.css">
+
+	<link rel="apple-touch-icon" sizes="180x180" href="./favicons/apple-touch-icon.png">
+	<link rel="icon" type="image/png" href="./favicons/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="./favicons/favicon-16x16.png" sizes="16x16">
+	<link rel="manifest" href="./favicons/manifest.json">
+	<link rel="mask-icon" href="./favicons/safari-pinned-tab.svg" color="#5bbad5">
+	<link rel="shortcut icon" href="./favicons/favicon.ico">
+	<meta name="msapplication-config" content="./favicons/browserconfig.xml">
+	<meta name="theme-color" content="#ffffff">
+	
+	<script src="./js/lib/easeljs-0.8.2.min.js"></script>
+	<script src="./js/lib/webgl-0.8.2.min.js"></script>
+	<script src="./js/lib/preloadjs-0.6.2.min.js"></script>
+	<script src="./js/lib/jquery.min.js"></script>
+	<script src="./js/lib/seedrandom.min.js"></script>
+	<script src="./js/lib/socket.io-1.4.5.js"></script>
+	<script src="./js/lib/espeak/espeak.js"></script>
+	<script src="./js/lib/jquery.contextMenu.min.js"></script>
+
+	<script src="./cordova.js"></script>
+
+	<script src="./js/platform.js"></script>
+	<link rel="stylesheet" type="text/css" href="./css/platform.css">
+
+	<script src="./js/script.min.js"></script>
+</head>
+<body>
+	<div id="content">
+
+		<canvas id="bonzi_canvas" width="100" height="100"></canvas>
+
+		<div id="room_info">
+			Room ID - <span class="room_id">???</span><br>
+			<span id="room_public">This room is public.</span>
+			<span id="room_private">This room is private.</span>
+			<span id="room_owner"><br>You are the owner of this room.</span>
+		</div>
+		
+		<table id="chat_bar"><tr>
+			<td id="chat_send">send</td>
+			<td id="chat_message_cont"><input id="chat_message" type="text" placeholder="Enter a message"></td>
+		</tr></table>
+
+
+		<div id="page_login" class="page">
+			<div id="login_apps" class="app_showcase"></div>
+			<div id="login_readme">Make sure to check out the <a id="readme" href="readme.html" target="_blank">README</a> before use.</div>
+			<div id="login_card" style="display:none">
+				<input id="login_name" type="text" placeholder="Nickname">
+				<input id="login_room" type="text" placeholder="Room ID (Optional)">
+				<div id="login_go"></div>
+				<div id="login_error" style="display:none"></div>
+			</div>
+			<div id="login_load">loading</div>
+			<div id="login_version">Version {{VERSION}}</div>
+		</div>
+
+		<div id="page_error" class="page" style="display:none">
+			<div id="error_cont" class="message_cont">
+				<img src="./img/error/logo.png"><br>
+				<br>
+				<h1>BonziWORLD.exe has encountered an error and needs to close.</h1><br>
+				Nah, but seriously there was an error and you got disconnected from the server. Chances are, your internet just died out for a brief moment or your device went to sleep. Otherwise the server just screwed up.<br>
+				<br>
+				Try and reload the page. If that doesn't work and your internet is okay, then panic. We'll probably be back up Soon&trade; though.<br>
+				<br>
+				<a href="#" onClick="window.location.reload()">Reload?</a><br>
+				<br>
+				Room ID - <span class="room_id">???</span><br>
+			</div>
+		</div>
+
+		<div id="page_ban" class="page" style="display:none">
+			<div id="ban_cont" class="message_cont">
+				<img src="./img/ban/logo.png"><br>
+				<br>
+				<h1>You got banned!</h1><br>
+				<br>
+				<b>Why? </b><span id="ban_reason"></span><br>
+				<b>When is it over? </b><span id="ban_end"></span><br>
+			</div>
+		</div>
+
+		<div id="page_unsupp" class="page" style="display:none">
+			<div id="unsupp_cont" class="message_cont">
+				<img src="./img/error/logo.png"><br>
+				<br>
+				<h1>BonziWORLD cannot run on this platform.</h1><br>
+				Unfortunately, BonziWORLD cannot run in this browser for the following reasons:<br>
+				<ul id="unsupp_reasons"></ul>
+				You can try to download a BonziWORLD app that works on your device, or update your browser.
+				<div id="login_apps" class="app_showcase"></div>
+			</div>
+		</div>
+	</div>
+
+	<div id="titlebar">
+		<div id="minimize"></div>
+		<div id="maximize"></div>
+		<div id="close"></div>
+	</div>
+
+	<ad></ad>
+
+</body>
+</html>

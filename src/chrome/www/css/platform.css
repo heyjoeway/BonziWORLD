@@ -1,0 +1,107 @@
+#titlebar {
+	position: fixed;
+	width: 100%;
+	height: 29px;
+	-webkit-app-region: drag;
+	top: 0;
+}
+
+#close, #maximize, #minimize,
+#close:after, #maximize:after, #minimize:after {
+	position: absolute;
+	top: 0;
+	width: 45px;
+	height: 29px;
+	background-image: url("../img/titlebar.png");
+	background-repeat: no-repeat;
+	-webkit-app-region: no-drag;
+}
+
+#close:after, #maximize:after, #minimize:after {
+	content: '';
+	transition: opacity 0.1s;
+	opacity: 0;
+}
+
+/* Close Button */
+
+#close {
+	right: 0;
+	background-position: -135px 0;
+}
+
+#close:after {
+	background-position: -135px -29px;
+}
+
+#close:hover::after {
+	opacity: 1;
+}
+
+#close:active::after {
+	opacity: 0;
+}
+
+#close:active {
+	background-position: -135px -58px;
+}
+
+/* Maximize Button */
+
+#maximize {
+	right: 45px;
+	background-position: -45px 0;
+}
+
+#maximize:after {
+	background-position: -45px -29px;
+}
+
+#maximize:hover::after {
+	opacity: 1;
+}
+
+#maximize:active::after {
+	opacity: 0;
+}
+
+#maximize:active {
+	background-position: -45px -58px;
+}
+
+/* Restore Button */
+
+#maximize.restore {
+	background-position: -90px 0;
+}
+
+#maximize.restore:after {
+	background-position: -90px -29px;
+}
+
+#maximize.restore:active {
+	background-position: -90px -58px;
+}
+
+/* Minimize Button */
+
+#minimize {
+	right: 90px;
+	background-position: 0 0;
+}
+
+#minimize:after {
+	background-position: 0 -29px;
+}
+
+#minimize:hover::after {
+	opacity: 1;
+}
+
+#minimize:active::after {
+	opacity: 0;
+}
+
+#minimize:active {
+	background-position: 0 -58px;
+}

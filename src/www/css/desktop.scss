@@ -1,0 +1,72 @@
+@import "desktop.vaporwave";
+
+#content {
+	background-color: #6d33a0;
+	background-image:
+		url("../img/desktop/logo.png"),
+		url("../img/desktop/bg.png");
+	background-position:
+		top left,
+		center;
+	background-repeat: no-repeat;
+}
+
+#chat_bar {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 30px;
+	background-image: url("../img/desktop/taskbar.png");
+	background-size: 100% 100%;
+	z-index: 999;
+}
+
+.chat_bar_top {
+	top: 0;
+}
+
+#chat_send {
+	width: 100px;
+	background-image: url("../img/desktop/start.png");
+	background-size: 100%;
+	background-repeat: no-repeat;
+	box-sizing: border-box;
+	color: #fff;
+    font-style: italic;
+    font-weight: bold;
+    letter-spacing: 2px;
+	font-size: 16px;
+	text-shadow: 1px 1px 2px rgba(0,0,0,0.75);
+	padding-left: 35px;
+
+	&:hover {
+		background-position: 0 -33px;
+	}
+
+	&:active {
+		background-position: 0 -67px;
+	}
+}
+
+#chat_message_cont {
+	padding: 4px;
+}
+
+#chat_message {
+	width: 100%;
+}
+
+#room_info {
+	color: rgba(255,255,255,0.5);
+	font-weight: bold;
+	line-height: 125%;
+	text-align: right;
+	padding: 7px;
+	font-size: 10px;
+	position: absolute;
+	bottom: 30px;
+	right: 0;
+	user-select: text;
+	-webkit-user-select: text;
+}

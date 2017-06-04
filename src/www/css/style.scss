@@ -1,0 +1,52 @@
+body, html, {
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+.page {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	z-index: 999;
+}
+
+.xp_dialog {
+	background: #ffffe1;
+	color: #000;
+	-webkit-border-radius: 9px;
+	-moz-border-radius: 9px;
+	border-radius: 9px;
+	border: #000000 solid 1px;
+}
+
+.xp_textbox {
+	position: absolute;
+	padding: 4px 3px;
+	border: none;
+	border-radius: 3px;
+	box-shadow: 2px 2px 2px #13316f;
+	outline: none;
+	background: #fff;
+	color: #000;
+}
+
+#content {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+}
+
+@import "apps";
+@import "ads";
+@import "reset";
+@import "common";
+@import "font";
+@import "bonzi";
+@import "desktop";
+@import "logon";
+@import "logon.mobile";
+@import "message";
+@import "lib/jquery-contextmenu/jquery.contextMenu.scss";

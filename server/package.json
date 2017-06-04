@@ -1,0 +1,16 @@
+{
+  "name": "bonziworld_server",
+  "version": "1.2.2",
+  "description": "Server for the BonziWORLD chat client.",
+  "main": "index.js",
+  "author": "Joseph Judge",
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "express": "4.13.4",
+    "fs-extra": "^0.30.0",
+    "sanitize-html": "^1.12.0",
+    "socket.io": "^1.4.6",
+    "winston": "^2.2.0"
+  }
+}

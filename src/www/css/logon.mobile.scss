@@ -1,0 +1,67 @@
+@media screen and (max-height: 550px) {
+
+	#page_login {
+		background-image: url("../img/logon/logo.png"), url("../img/logon/topleft.png");
+		background-position: center, 0 -100px;
+		background-size: auto, auto;
+		background-repeat: no-repeat;
+	}
+
+	#login_readme {
+	    font-size: 12px;
+	    bottom: 10%;
+	}
+}
+
+@media screen and (max-height: 650px) {
+	#login_apps > a:not(:first-child) {
+		display: none;
+	}
+}
+
+@media screen and (max-height: 450px) {
+	#login_apps {
+		display: none;
+	}
+}
+
+@media screen and (max-height: 300px) {
+	#login_readme, #login_version {
+		display: none;
+	}
+}
+
+@media screen and (max-height: 400px) and (max-width: 560px) {
+	#login_readme {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 560px) {
+
+	#page_login {
+		background-image: url("../img/logon/logo.mobile.png"), url("../img/logon/topleft.png");
+		background-position: center, 0 -100px;
+		background-size: auto, auto;
+		background-repeat: no-repeat;
+	}
+
+	#login_card {
+		background-image: url("../img/logon/card.mobile.png");
+		width: 223px;
+		height: 70px;
+		margin-left: -112px;
+		margin-top: 40px;
+	}
+
+	#login_readme {
+		bottom: 10%;
+	}
+
+	#login_load {
+	    margin-top: 45px;
+	    margin-left: 0;
+    	transform: translateX(-50%);
+    	-webkit-transform: translateX(-50%);
+	}
+}

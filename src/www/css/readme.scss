@@ -1,0 +1,33 @@
+@import "common";
+@import "font";
+
+html {
+	overflow-y: auto;
+}
+
+body {
+	background-color: #6d33a0;
+	background-image: url("../img/desktop/bg.png");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+}
+
+#content {
+	width: 75%;
+	max-width: 800px;
+	margin: 32px auto;
+	padding: 16px 32px;
+
+	@extend .xp_bubble;
+
+	background-color: rgba(255, 255, 225, 0.8);
+}
+
+#bonziworld {
+	display: none;
+}
+
+#titlebar {
+	background-color: rgba(109,51,160, 0.85);
+}
