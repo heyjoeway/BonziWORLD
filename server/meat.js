@@ -307,7 +307,6 @@ class User {
         }
         
         this.room = rooms[rid];
-        console.log(this.room);
 
         // Check name
 		this.public.name = sanitize(data.name) || this.room.prefs.defaultName;

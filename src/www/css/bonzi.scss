@@ -21,23 +21,21 @@ $bonzi_height: 160px;
 	position: absolute;
 }
 
-.bubble, .bubble_rev {
-	position: absolute;
-	width: 170px;
+.bubble-content {
 	padding: 12px;
-	top: 55px;
+	max-height: 175px;	
 
 	user-select: text;
 	-webkit-user-select: text;
 
-	@extend .xp_bubble;
+	overflow-x: hidden;
+	overflow-y: auto;
 
-	// font-family: "Microsoft Sans Serif", sans-serif;
 	font-size: 14px;
 	font-smooth: never;
 	-webkit-font-smoothing : none;
-    position: absolute;
-
+	position: relative;
+	
     // https://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/
 	overflow-wrap: break-word;
 	word-wrap: break-word;
@@ -47,57 +45,73 @@ $bonzi_height: 160px;
 	-moz-hyphens: auto;
 	-webkit-hyphens: auto;
 	hyphens: auto;
-	
-	&:after, &:before {
-		content: '';
-		position: absolute;
-		border-style: solid;
-		border-width: 4px 12px 4px 0;
-		display: block;
-		width: 0;
-		top: 9px;
-	}
-	
-	&:after {
-		border-color: transparent #ffffe1;
-		z-index: 1;
-	}
-	
-	&:before {
-		border-color: transparent #000000;
-		z-index: 0;
-	}
 }
 
 .bubble {
-    left: $bonzi_width - 20px;
+	padding: 0px;
 
-	&:after, &:before {
-		border-width: 4px 12px 4px 0;
-	}
-	
-	&:after {
-		left: -12px;
-	}
-	
-	&:before {
-		left: -13px;
+	width: 197px;
+
+	position: absolute;
+
+	@extend .xp_bubble;
+
+	&::after {
+		content: '';
+		position: absolute;
 	}
 }
 
-.bubble_rev {
-	right: -20px;
+.bubble-left {
+	right: -45px;
+	top: 40px;
 
-	&:after, &:before {
-		border-width: 4px 0 4px 12px;
+	&::after {
+		background-image: url('/img/bonzi/bubble_tail_l.png');
+		width: 22px;
+		height: 14px;
+		
+		top: 12px;
+		right: -22px;
 	}
+}
+
+.bubble-right {
+	top: 40px;
+	left: $bonzi_width - 45px;
 	
-	&:after {
-		right: -12px;
+	&::after {
+		background-image: url('/img/bonzi/bubble_tail_r.png');
+		width: 22px;
+		height: 14px;
+		
+		top: 12px;
+		left: -22px;
 	}
+}
+
+.bubble-bottom {
+	top: $bonzi_height - 4px;
+
+	&::after {
+		background-image: url('/img/bonzi/bubble_tail_b.png');
+		width: 28px;
+		height: 22px;
+		
+		top: -22px;
+		left: 26px;
+	}
+}
+
+.bubble-top {
+	bottom: 4px;
 	
-	&:before {
-		right: -13px;
+	&::after {
+		background-image: url('/img/bonzi/bubble_tail_t.png');
+		width: 28px;
+		height: 22px;
+		
+		left: 110px;
 	}
 }
 

@@ -61,12 +61,15 @@ class Bonzi {
 			<div id='bonzi_${this.id}' class='bonzi'>
 				<div class='bonzi_name'></div>
 					${bonziSpot}
-				<p style='display:none'></p>
+				<div style='display:none' class='bubble'>
+					<p class='bubble-content'></p>
+				</div>
 			</div>
 		`);
 
 		this.selElement = "#bonzi_" + this.id;
-		this.selDialog = this.selElement + " > p";
+		this.selDialog = this.selElement + " > .bubble";
+		this.selDialogCont = this.selElement + " > .bubble > p";
 		this.selNametag = this.selElement + " > .bonzi_name";
 
 		if (BonziHandler.oneCanvas) {
@@ -84,6 +87,7 @@ class Bonzi {
 		this.$element	= $(this.selElement);
 		this.$canvas	= $(this.selCanvas);
 		this.$dialog	= $(this.selDialog);
+		this.$dialogCont	= $(this.selDialogCont);
 		this.$nametag	= $(this.selNametag);
 
 		this.updateName();
@@ -248,15 +252,19 @@ class Bonzi {
 			this.eventQueue.push(this.eventMake(list));
 	}
 
+	clearDialog() {
+		this.$dialogCont.html("");
+		this.$dialog.hide();
+	}
+
 	cancel() {
-		this.$dialog.html("").hide();
+		this.clearDialog();
 		this.stopSpeaking();
 		this.eventQueue = [this.eventMake([{ type: "idle" }])];
 	}
 
 	retry() {
-		this.$dialog.html("").hide();
-		this.stopSpeaking();
+		this.clearDialog();
 		this.event.timer = 0;
 	}
 
@@ -384,10 +392,9 @@ class Bonzi {
 			(text.substring(0, 4) == "&gt;") ||
 			(text[0] == ">");
 
-		this.$dialog
+		this.$dialogCont
 			[allowHtml ? "html" : "text"](text)
 			[greentext ? "addClass" : "removeClass"]("bubble_greentext")
-			.removeClass("bubble_autowidth")
 			.css("display", "block");
 
 		// THANK YOU ESPEAK FOR FIXING ALL OF MESPEAK'S BROKEN BULLSHIT
@@ -401,7 +408,7 @@ class Bonzi {
 			this.userPublic.pitch,
 			(success) => {
 				if (success)
-					this.$dialog.html("").hide();
+					this.clearDialog()
 			}
 		);
 	}
@@ -434,12 +441,11 @@ class Bonzi {
 	youtube(vid) {
 		if (!this.mute) {
 			var tag = isChromeApp ? "webview" : "iframe";
-			this.$dialog
-				.addClass("bubble_autowidth")
+			this.$dialogCont
 				.html(`
-					<${tag} type="text/html" width="480" height="270" 
+					<${tag} type="text/html" width="173" height="173" 
 					src="https://www.youtube.com/embed/${vid}?autoplay=1" 
-					style="width:480px;height:270px"
+					style="width:173px;height:173px"
 					frameborder="0"
 					allowfullscreen="allowfullscreen"
 					mozallowfullscreen="mozallowfullscreen"
@@ -447,7 +453,8 @@ class Bonzi {
 					oallowfullscreen="oallowfullscreen"
 					webkitallowfullscreen="webkitallowfullscreen"
 					></${tag}>
-				`).show();
+				`)
+			this.$dialog.show();
 		}
 	}
 
@@ -491,14 +498,35 @@ class Bonzi {
 		// ========================================================================
 		// DIALOG BOX
 		// ========================================================================
-		if (this.x < (this.$container.width() / 2) - (this.data.size.x / 2)) {
-			this.$dialog
-				.removeClass("bubble_rev")
-				.addClass("bubble");
-		} else {
-			this.$dialog
-				.removeClass("bubble")
-				.addClass("bubble_rev");
+		var max = this.maxCoords();
+		if (this.data.size.x + this.$dialog.width() > max.x) {
+			if (this.y < (this.$container.height() / 2) - (this.data.size.x / 2)) {
+				this.$dialog
+					.removeClass("bubble-top")
+					.removeClass("bubble-left")
+					.removeClass("bubble-right")
+					.addClass("bubble-bottom");
+			} else {
+				this.$dialog
+					.removeClass("bubble-bottom")
+					.removeClass("bubble-left")
+					.removeClass("bubble-right")
+					.addClass("bubble-top");
+			}
+		} else {		
+			if (this.x < (this.$container.width() / 2) - (this.data.size.x / 2)) {
+				this.$dialog
+					.removeClass("bubble-left")
+					.removeClass("bubble-top")
+					.removeClass("bubble-bottom")
+					.addClass("bubble-right");
+			} else {
+				this.$dialog
+					.removeClass("bubble-right")
+					.removeClass("bubble-top")
+					.removeClass("bubble-bottom")
+					.addClass("bubble-left");
+			}
 		}
 	}
 
