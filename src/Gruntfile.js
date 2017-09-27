@@ -271,7 +271,7 @@ grunt.initConfig({
 require('load-grunt-tasks')(grunt);
 
 grunt.registerTask('default', [
-	"test_chrome"
+	"test_www"
 ]);
 
 grunt.registerTask('www', [
