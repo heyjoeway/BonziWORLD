@@ -7,7 +7,7 @@ const sanitize = require('sanitize-html');
 
 let roomsPublic = [];
 let rooms = {};
-// let users = [];
+let usersAll = [];
 
 exports.beat = function() {
     io.on('connection', function(socket) {
@@ -220,6 +220,11 @@ class User {
         this.guid = Utils.guidGen();
         this.socket = socket;
 
+        // Handle ban
+	    if (Ban.isBanned(this.getIp())) {
+            Ban.handleBan(this.socket);
+        }
+
         this.private = {
             login: false,
             sanitize: true,
@@ -350,9 +355,6 @@ class User {
         this.socket.on('talk', this.talk.bind(this));
         this.socket.on('command', this.command.bind(this));
         this.socket.on('disconnect', this.disconnect.bind(this));
-
-        // Handle ban
-	    if (Ban.isBanned(this.getIp())) Ban.handleBan(socket);
     }
 
     talk(data) {

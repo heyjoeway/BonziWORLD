@@ -29,6 +29,8 @@ let commands = {
             let ip = args[0];
             let reason = args.slice(1).join(" ");
 
+            if (reason.trim() == "") reason = undefined;
+
             Ban.kick(ip, reason);
             console.log(
                 "kick: " +

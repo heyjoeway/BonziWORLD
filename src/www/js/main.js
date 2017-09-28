@@ -47,6 +47,11 @@ $(function() {
 		$("#ban_end").html(new Date(data.end).toString());
 	});
 
+	socket.on("kick", function(data) {
+		$("#page_kick").show();
+		$("#kick_reason").html(data.reason);
+	});
+
 	socket.on("loginFail", function(data) {
 		var errorText = {
 			"nameLength": "Name too long.",
@@ -70,7 +75,7 @@ $(function() {
 });
 
 function errorFatal() {
-	if ($("#page_ban").css("display") == "none") {
+	if (($("#page_ban").css("display") == "none") || ($("#page_kick").css("display") == "none")) {
 		$("#page_error").show();
 	}
 }

@@ -1,5 +1,8 @@
 const log = require('./log.js').log;
 const fs = require('fs-extra');
+const settings = require("./settings.json");
+const io = require('./index.js').io;
+
 
 let bans;
 
@@ -56,28 +59,34 @@ exports.handleBan = function(socket) {
 	var ip = socket.request.connection.remoteAddress;
 	if (bans[ip].end <= new Date().getTime()) {
 		exports.removeBan(ip);
-	} else {		
-		log.access.log('info', 'ban', {
-			ip: ip,
-			guid: socket.guid,
-		});
-		socket.emit('ban', {
-			reason: bans[ip].reason,
-			end: bans[ip].end
-		});
-		socket.disconnect();
+		return false;
 	}
+
+	log.access.log('info', 'ban', {
+		ip: ip,
+		guid: socket.guid,
+	});
+	socket.emit('ban', {
+		reason: bans[ip].reason,
+		end: bans[ip].end
+	});
+	socket.disconnect();
+	return true;
 };
 
-exports.kick = function(socket) {
-    log.access.log('info', 'kick', {
-        ip: ip,
-        guid: socket.guid,
-    });
-    socket.emit('kick', {
-        reason: bans[ip].reason
-    });
-    socket.disconnect();
+exports.kick = function(ip, reason) {
+	var sockets = io.sockets.sockets;
+	var socketList = Object.keys(sockets);
+
+	for (var i = 0; i < socketList.length; i++) {
+		var socket = sockets[socketList[i]];
+		if (socket.request.connection.remoteAddress == ip) {
+			socket.emit('kick', {
+				reason: reason || "N/A"
+			});
+			socket.disconnect();
+		}
+	}
 };
 
 exports.isBanned = function(ip) {
