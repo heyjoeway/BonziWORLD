@@ -63,7 +63,8 @@ Obviously no illegal shit. On top of that, there are a few limitations:
 * There is a 2500 character limit in public rooms and a 5000 limit in private rooms.
 	* Yes, the Navy Seals copypasta fits.
 * There is a 25 character limit on names.
-* A max of 15 people are allowed in a public lobby. After that, a new public room will be created. A max of 30 people are allowed in private lobbies.
+* A max of 8 people are allowed in a public lobby. After that, a new public room will be created. A max of 30 people are allowed in private lobbies.
+	* Yeah, I know I changed the limit down from 15. With the limited screen space and processing power on mobile, this was part of the reason things were running so shitty.
 
 Remember that people can play YouTube videos whenever they want. **Keep your volume down, headphone users.** Chat rooms are for the most part unmoderated. If shit starts getting spambotty, I might start using my banhammer.
 
@@ -98,7 +99,7 @@ If you want to be listed here just email me and I'll probably put you in the nex
 
 ## Contact me
 
-### bonziworldguy@gmail.com
+### bonzi@bonziworld.com
 
 Email me there with any comments, questions, or concerns. Or whatever else. Memes? Sure, throw those in too.
 
@@ -106,10 +107,6 @@ Email me there with any comments, questions, or concerns. Or whatever else. Meme
 
 [pc_banner]: ./img/app/desktop.png
 ![Open on PC for the best experience. (bonziworld.com)][pc_banner]
-
-[chrome_banner]: ./img/app/chrome.png
-[chrome_url]: https://chrome.google.com/webstore/detail/bonziworld/naiglhkfakaaialhnjabkpaiihglgnmk
-[![Available in the Chrome Web Store.][chrome_banner]][chrome_url]
 
 [gplay_banner]: ./img/app/google-play-badge.png
 [gplay_url]: https://play.google.com/store/apps/details?id=com.jojudge.bonziworld
