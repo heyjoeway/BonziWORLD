@@ -1,4 +1,4 @@
-const Winston = require('Winston');
+const Winston = require('winston');
 const path = require('path');
 const settings = require("./settings.json");
 const fs = require('fs-extra');
