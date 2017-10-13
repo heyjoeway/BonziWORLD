@@ -5,6 +5,7 @@ $bonzi_height: 160px;
 	width: 100%;
 	height: 100%;
 	position: absolute;
+	pointer-events: none;
 	top: 0;
 	left: 0;
 }
@@ -67,7 +68,7 @@ $bonzi_height: 160px;
 	top: 40px;
 
 	&::after {
-		background-image: url('/img/bonzi/bubble_tail_l.png');
+		background-image: url('../img/bonzi/bubble_tail_l.png');
 		width: 22px;
 		height: 14px;
 		
@@ -81,7 +82,7 @@ $bonzi_height: 160px;
 	left: $bonzi_width - 45px;
 	
 	&::after {
-		background-image: url('/img/bonzi/bubble_tail_r.png');
+		background-image: url('../img/bonzi/bubble_tail_r.png');
 		width: 22px;
 		height: 14px;
 		
@@ -94,7 +95,7 @@ $bonzi_height: 160px;
 	top: $bonzi_height - 4px;
 
 	&::after {
-		background-image: url('/img/bonzi/bubble_tail_b.png');
+		background-image: url('../img/bonzi/bubble_tail_b.png');
 		width: 28px;
 		height: 22px;
 		
@@ -107,16 +108,12 @@ $bonzi_height: 160px;
 	bottom: 4px;
 	
 	&::after {
-		background-image: url('/img/bonzi/bubble_tail_t.png');
+		background-image: url('../img/bonzi/bubble_tail_t.png');
 		width: 28px;
 		height: 22px;
 		
 		left: 110px;
 	}
-}
-
-.bubble_autowidth {
-	width: auto !important;
 }
 
 .bonzi_name {

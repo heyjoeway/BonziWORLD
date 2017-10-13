@@ -1,24 +1,10 @@
 var espeak = new Espeak('./js/lib/espeak/espeak.worker.js');
 var auCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-// http://stackoverflow.com/a/22953053/2605226
-function webgl_support() { 
-   try{
-    var canvas = document.createElement('canvas'); 
-    return !! window.WebGLRenderingContext && ( 
-         canvas.getContext('webgl') || canvas.getContext('experimental-webgl') );
-   }catch( e ) { return false; } 
- };
-
 $(document).ready(function() {
 
 window.BonziHandler = new (function() {
 	this.framerate = 1.0/15.0;
-
-	// MAKE SURE oneCanvas IS SET TO isMobileApp BEFORE CREATING DIST BUILD
-
-	this.oneCanvas = isMobileApp;
-	this.selCanvas = "#bonzi_canvas";
 
 	this.spriteSheets = {};
 	this.prepSprites = function() {
@@ -29,6 +15,7 @@ window.BonziHandler = new (function() {
 			"green",
 			"purple",
 			"red",
+			"pink",
 			"pope"
 		];
 
@@ -44,89 +31,60 @@ window.BonziHandler = new (function() {
 	};
 	this.prepSprites();
 
-
-	if (this.oneCanvas) {
-		
-		this.resizeCanvas = function() {
-			$(this.selCanvas).attr({
-				"width": $(this.selCanvas).width(),
-				"height": $(this.selCanvas).height()
-			});
-			if (typeof this.stage != "undefined") {
-				this.stage.removeAllChildren();
-				delete this.stage;
-			}
-			this.stage = new createjs.SpriteStage($(this.selCanvas)[0]);
-			this.stage.tickOnUpdate = false;
-			this.needsUpdate = true;
-			for (var i = 0; i < usersAmt; i++) {
-				var key = usersKeys[i];
-				bonzis[key].updateSprite();
-				bonzis[key].move();
-			}
-		};
-		this.resizeCanvas();
-		this.resize = function() {
-			setTimeout(this.resizeCanvas.bind(this), 1);
-		};
-
+	this.$canvas = $("#bonzi_canvas");
+	
+	this.stage = new createjs.StageGL(this.$canvas[0], { "transparent": true });
+	this.stage.tickOnUpdate = false;
+	
+	this.resizeCanvas = function() {
+		var width = this.$canvas.width();
+		var height = this.$canvas.height();
+		this.$canvas.attr({
+			"width": this.$canvas.width(),
+			"height": this.$canvas.height()
+		});
+		this.stage.updateViewport(width, height);
 		this.needsUpdate = true;
+		for (var i = 0; i < usersAmt; i++) {
+			var key = usersKeys[i];
+			bonzis[key].move();
+		}
+	};
+	
+	this.resizeCanvas();
 
-		this.intervalHelper = setInterval(function() {
-			BonziHandler.needsUpdate = true;
-		}, 1000);
+	this.resize = function() {
+		setTimeout(this.resizeCanvas.bind(this), 1);
+	};
 
-		this.stageFramerate = 1.0/60.0;
+	this.needsUpdate = true;
 
-		this.intervalTick = setInterval(function() {
-			for (var i = 0; i < usersAmt; i++) {
-				var key = usersKeys[i];
-				bonzis[key].update();
-			}
-			BonziHandler.stage.tick();
-		}, this.framerate * 1000);
+	this.intervalHelper = setInterval((function() {
+		this.needsUpdate = true;
+	}).bind(this), 1000);
 
-		this.intervalMain = setInterval(function() {
-			if (BonziHandler.needsUpdate) {
-				BonziHandler.stage.update();
-				BonziHandler.needsUpdate = false;
-			}
-		}, this.stageFramerate * 1000);
-	} else {
-		$(this.selCanvas).remove();
+	this.intervalTick = setInterval((function() {
+		for (var i = 0; i < usersAmt; i++) {
+			var key = usersKeys[i];
+			bonzis[key].update();
+		}
+		this.stage.tick();
+	}).bind(this), this.framerate * 1000);
+	
+	this.intervalMain = setInterval((function() {
+		if (this.needsUpdate) {
+			this.stage.update();
+			this.needsUpdate = false;
+		}
+	}).bind(this), 1000.0 / 60.0);
 
-		this.resize = function() {
-			setTimeout((function() {			
-				for (var i = 0; i < usersAmt; i++) {
-					var key = usersKeys[i];
-					bonzis[key].move();
-				}
-			}).bind(this), 1);
-		};
 
-		this.intervalHelper = setInterval(function() {
-			for (var i = 0; i < usersAmt; i++) {
-				var key = usersKeys[i];
-				bonzis[key].needsUpdate = true;
-			}
-		}, 1000);
-
-		this.intervalMain = setInterval(function() {
-			for (var i = 0; i < usersAmt; i++) {
-				var key = usersKeys[i];
-				bonzis[key].update();
-			}
-		}, this.framerate * 1000);
-	}
-
-	$(window).resize(function() {
-		BonziHandler.resize();
-	});
+	$(window).resize(this.resize.bind(this));
 
 	if (isMobileApp)
 		this.intervalFixAuCtx = setInterval((function() {
-			BonziHandler.fixAuCtx();
-		}), 1000);
+			this.fixAuCtx();
+		}).bind(this), 1000);
 
 	// ========================================================================
 	// SPEECH
@@ -191,6 +149,9 @@ window.BonziHandler = new (function() {
 		}
 	};
 
+	// UH OH
+	// HACK ALERT
+
 	this.checkAuCtx = function() {
 		var keys = Object.keys(this.speakList);
 		var allInitialized = true;
@@ -222,6 +183,29 @@ window.BonziHandler = new (function() {
 			}
 		}
 	};
+
+	$("#btn_tile").click(function() {
+		var winWidth = $(window).width();
+		var winHeight = $(window).height();
+		var minY = 0;
+		var addY = 80;
+		var x = 0, y = 0;
+		for (var i = 0; i < usersAmt; i++) {
+			var key = usersKeys[i];
+			bonzis[key].move(x, y);
+			
+			x += 200;
+			if (x + 100 > winWidth) {
+				x = 0;
+				y += 160;
+				if (y + 160 > winHeight) {
+					minY += addY;
+					addY /= 2;
+					y = minY;
+				}
+			}
+		}
+	});
 
 	return this;
 })();

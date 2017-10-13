@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.jojudge.bonziworld" version="{{VERSION}}" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>BonziWORLD</name>
+    <description>
+        Leading the industry in gorilla-based chat clients.
+    </description>
+    <author email="admin@bonziworld.com" href="http://bonziworld.com">
+        Joseph Judge
+    </author>
+    <content src="index.html" />
+    <plugin name="cordova-plugin-whitelist" spec="1" />
+    <access origin="*" />
+    <allow-navigation href="http://bonziworld.com/*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="mailto:*" />
+    <preference name="DisallowOverscroll" value="true" />
+    <preference name="loadUrlTimeoutValue" value="600000" />
+    <preference name="StatusBarBackgroundColor" value="#000000" />
+    <icon src="res/web_hi_res_512.png" />
+    <platform name="android">
+        <allow-intent href="market:*" />
+        <icon density="mdpi" src="res/android/mipmap-mdpi/ic_launcher.png" />
+        <icon density="hdpi" src="res/android/mipmap-hdpi/ic_launcher.png" />
+        <icon density="xhdpi" src="res/android/mipmap-xhdpi/ic_launcher.png" />
+        <icon density="xxhdpi" src="res/android/mipmap-xxhdpi/ic_launcher.png" />
+        <icon density="xxxhdpi" src="res/android/mipmap-xxxhdpi/ic_launcher.png" />
+    </platform>
+    <preference name="android-minSdkVersion" value="21" />
+    <platform name="ios">
+        <allow-intent href="itms:*" />
+        <allow-intent href="itms-apps:*" />
+    </platform>
+    <engine name="android" spec="~6.3.0" />
+</widget>

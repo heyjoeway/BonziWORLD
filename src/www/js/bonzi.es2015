@@ -52,15 +52,11 @@ class Bonzi {
 		// ========================================================================
 		this.selContainer = "#content";
 		this.$container	= $(this.selContainer);
-		
-		var bonziSpot = BonziHandler.oneCanvas ?  
-			"<div class='bonzi_placeholder'></div>" :
-			"<canvas></canvas>";
-
+				
 		this.$container.append(`
 			<div id='bonzi_${this.id}' class='bonzi'>
 				<div class='bonzi_name'></div>
-					${bonziSpot}
+					<div class='bonzi_placeholder'></div>
 				<div style='display:none' class='bubble'>
 					<p class='bubble-content'></p>
 				</div>
@@ -72,17 +68,10 @@ class Bonzi {
 		this.selDialogCont = this.selElement + " > .bubble > p";
 		this.selNametag = this.selElement + " > .bonzi_name";
 
-		if (BonziHandler.oneCanvas) {
-			this.selCanvas = this.selElement + " > .bonzi_placeholder";
-			$(this.selCanvas)
-		 		.width(this.data.size.x)
-		 		.height(this.data.size.y);
-		} else {
-			this.selCanvas = this.selElement + " > canvas";
-			$(this.selCanvas)
-		 		.attr("width", this.data.size.x)
-		 		.attr("height", this.data.size.y);
-		}
+		this.selCanvas = this.selElement + " > .bonzi_placeholder";
+		$(this.selCanvas)
+			.width(this.data.size.x)
+			.height(this.data.size.y);
 
 		this.$element	= $(this.selElement);
 		this.$canvas	= $(this.selCanvas);
@@ -94,12 +83,6 @@ class Bonzi {
 
 		$.data(this.$element[0], "parent", this);
 
-		// ========================================================================
-		// CREATEJS INIT
-		// ========================================================================
-		if (!BonziHandler.oneCanvas) {
-			this.stage = new createjs.Stage(this.$canvas[0]);
-		}
 	 	this.updateSprite(true);
 
 		// ========================================================================
@@ -156,6 +139,14 @@ class Bonzi {
 						callback: () => {
 							socket.emit("command", {
 								list: ["asshole", this.userPublic.name]
+							});
+						}
+					},
+					"owo": {
+						name: "Notice Bulge",
+						callback: () => {
+							socket.emit("command", {
+								list: ["owo", this.userPublic.name]
 							});
 						}
 					}
@@ -230,12 +221,9 @@ class Bonzi {
 			"marginTop": this.y
 		});
 
-		if (BonziHandler.oneCanvas) {
-			this.sprite.x = this.x;
-			this.sprite.y = this.y;
-			BonziHandler.needsUpdate = true;
-		}
-
+		this.sprite.x = this.x;
+		this.sprite.y = this.y;
+		BonziHandler.needsUpdate = true;
 		this.updateDialog();
 	}
 
@@ -278,12 +266,12 @@ class Bonzi {
 		this.willCancel = true;
 	}
 
+
 	updateAnim() {
 		if (this.event.timer === 0)
 			this.sprite.gotoAndPlay(this.event.cur().anim);
 		this.event.timer++;
-		(BonziHandler.oneCanvas ? BonziHandler : this)
-			.needsUpdate = true;
+		BonziHandler.needsUpdate = true;
 		if (this.event.timer >= this.event.cur().ticks)
 			this.eventNext();
 	}
@@ -327,8 +315,7 @@ class Bonzi {
 				if (this.sprite.currentAnimation == "idle")
 					this.eventNext();
 
-			(BonziHandler.oneCanvas ? BonziHandler : this)
-				.needsUpdate = true;
+			BonziHandler.needsUpdate = true;
 		}
 	}
 
@@ -428,19 +415,16 @@ class Bonzi {
 
 	deconstruct() {
 		this.stopSpeaking();
+		BonziHandler.stage.removeChild(this.sprite);
 		this.run = false;
 		this.$element.remove();
-		if (BonziHandler.oneCanvas)
-			BonziHandler.stage.removeChild(this.sprite);
-		else
-			delete this.stage;
 	}
 
 	updateName() { this.$nametag.text(this.userPublic.name); }
 
 	youtube(vid) {
 		if (!this.mute) {
-			var tag = isChromeApp ? "webview" : "iframe";
+			var tag = "iframe";
 			this.$dialogCont
 				.html(`
 					<${tag} type="text/html" width="173" height="173" 
@@ -475,23 +459,6 @@ class Bonzi {
 			});
 		}
 		this.runSingleEvent(event);
-	}
-
-	updateSprite(hide) {
-		var stage = BonziHandler.oneCanvas ? BonziHandler.stage : this.stage;
-		this.cancel();
-		stage.removeChild(this.sprite);
-		if (this.colorPrev != this.color) {
-			delete this.sprite;
-			this.sprite = new createjs.Sprite(
-				BonziHandler.spriteSheets[this.color],
-				hide ? "gone" : "idle"
-			);
-		}
-		this.sprite.x = 0;
-		this.sprite.y = 0;
-		stage.addChild(this.sprite);
-		this.move();
 	}
 
 	updateDialog() {
@@ -554,5 +521,34 @@ class Bonzi {
 				type: "idle"
 			}]
 		);
+	}
+	
+	owo(target) {
+		this.runSingleEvent(
+			[{
+				type: "text",
+				text: `*notices ${target}'s BonziBulge™*`,
+				say: `notices ${target}s bonzibulge`
+			}, {
+				type: "text",
+				text: "owo, wat dis?",
+				say: "oh woah, what diss?"
+			}]
+		);
+	}
+
+	updateSprite(hide) {
+		var stage = BonziHandler.stage;
+		this.cancel();
+		stage.removeChild(this.sprite);
+		if (this.colorPrev != this.color) {
+			delete this.sprite;
+			this.sprite = new createjs.Sprite(
+				BonziHandler.spriteSheets[this.color],
+				hide ? "gone" : "idle"
+			);
+		}
+		stage.addChild(this.sprite);
+		this.move();
 	}
 }

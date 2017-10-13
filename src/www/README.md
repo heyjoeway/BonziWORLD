@@ -37,6 +37,7 @@ If you see any brackets, they indicate a placeholder. Don't type them in.
 	* blue
 	* purple
 	* black
+	* pink
 	* If you don't type a color, you will be given one at random.
 * `/joke` - Tell a horribly written joke.
 * `/fact` - Tell a horribly written "fact".
@@ -48,6 +49,9 @@ If you see any brackets, they indicate a placeholder. Don't type them in.
 	* Don't ask why I implemented this. There's no answer.
 	* You can also right click on people to do the same thing.
 	* If you ever see a person named "fuG", make sure to call them an asshole.
+* `/owo [name]` - owo, wat dis?
+	* kill me
+	* Works pretty much the same as /asshole, right click and all.
 * `/triggered` - The best copypasta.
 * `/linux` - I'd just like to interject for a moment.
 * `/pawn` - Hi, my name is BonziBUDDY, and this is my website.
@@ -84,7 +88,7 @@ Remember that people can play YouTube videos whenever they want. **Keep your vol
 * seedrandom
 * realfavicongenerator.net
 * Apache Cordova
-* Crosswalk
+* ~~Crosswalk~~ RIP CROSSWALK v1.?.? - v1.4.2
 * scss/sass
 
 You guys are awesome. (And so are you, whoever's reading this!) There are also probably some others I forgot. If I remember you, I'll add you here.

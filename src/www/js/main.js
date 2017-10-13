@@ -148,6 +148,12 @@ function setup() {
 		b.asshole(data.target);
 	});
 
+	socket.on("owo", function(data) {
+		var b = bonzis[data.guid];
+		b.cancel();
+		b.owo(data.target);
+	});
+
 	socket.on("triggered", function(data) {
 		var b = bonzis[data.guid];
 		b.cancel();

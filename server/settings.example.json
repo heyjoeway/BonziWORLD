@@ -7,7 +7,6 @@
 			"runlevel": {
 				"godmode": 0,
 				"youtube": 0,
-				"sanitize": 3,
 				"joke": 0,
 				"fact": 0,
 				"backflip": 0,
@@ -22,6 +21,8 @@
 				"vaporwave": 0,
 				"unvaporwave": 0,
 				"name": 0,
+				"owo": 0,
+				"sanitize": 3,
 				"pope": 3
 			},
 			"room_max": 8,
@@ -45,7 +46,6 @@
 			"runlevel": {
 				"godmode": 0,
 				"youtube": 0,
-				"sanitize": 3,
 				"joke": 0,
 				"fact": 0,
 				"backflip": 0,
@@ -60,6 +60,8 @@
 				"vaporwave": 0,
 				"unvaporwave": 0,
 				"name": 0,
+				"owo": 0,
+				"sanitize": 3,
 				"pope": 3
 			},
 			"room_max": 30,
@@ -102,7 +104,8 @@
 		"green",
 		"red",
 		"black",
-		"brown"
+		"brown",
+		"pink"
 	],
 	"banLength": 1440,
 	"port": 3000,

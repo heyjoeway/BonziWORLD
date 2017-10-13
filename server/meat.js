@@ -11,7 +11,6 @@ let usersAll = [];
 
 exports.beat = function() {
     io.on('connection', function(socket) {
-        // users.push(new User(socket));
         new User(socket);
     });
 };
@@ -56,16 +55,24 @@ class Room {
     }
 
     leave(user) {
-       this.emit('leave', {
-            guid: user.guid
-       });
-
-       let userIndex = this.users.indexOf(user);
-
-       if (userIndex == -1) return;
-       this.users.splice(userIndex, 1);
-
-       checkRoomEmpty(this);
+        // HACK
+        try {
+            this.emit('leave', {
+                 guid: user.guid
+            });
+     
+            let userIndex = this.users.indexOf(user);
+     
+            if (userIndex == -1) return;
+            this.users.splice(userIndex, 1);
+     
+            checkRoomEmpty(this);
+        } catch(e) {
+            log.info.log('warn', 'roomLeave', {
+                e: e,
+                thisCtx: this
+            });
+        }
     }
 
     updateUser(user) {
@@ -138,7 +145,7 @@ let userCommands = {
     "pawn": "passthrough",
     "bees": "passthrough",
     "color": function(color) {
-        if (typeof color == "undefined") {
+        if (typeof color != "undefined") {
             if (settings.bonziColors.indexOf(color) == -1)
                 return;
             
@@ -158,6 +165,12 @@ let userCommands = {
     },
     "asshole": function() {
         this.room.emit("asshole", {
+            guid: this.guid,
+            target: sanitize(Utils.argsString(arguments))
+        });
+    },
+    "owo": function() {
+        this.room.emit("owo", {
             guid: this.guid,
             target: sanitize(Utils.argsString(arguments))
         });
@@ -254,6 +267,8 @@ class User {
     }
 
     login(data) {
+        if (this.private.login) return;
+
 		log.info.log('info', 'login', {
 			guid: this.guid,
         });
@@ -339,6 +354,7 @@ class User {
         this.room.join(this);
 
         this.private.login = true;
+        this.socket.removeAllListeners("login");
 
 		// Send all user info
 		this.socket.emit('updateAll', {
@@ -412,7 +428,6 @@ class User {
     }
 
     disconnect() {
-
 		let ip = "N/A";
 		let port = "N/A";
 
@@ -456,7 +471,11 @@ class User {
 					roomsPublic.splice(publicIndex, 1);
 				}
 
-			}
+            }
+            
+            this.socket.removeAllListeners('talk');
+            this.socket.removeAllListeners('command');
+            this.socket.removeAllListeners('disconnect');
 		} catch(e) { 
 			log.info.log('warn', "exception", {
 				guid: this.guid,

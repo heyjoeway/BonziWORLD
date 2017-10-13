@@ -22,6 +22,30 @@ body.vaporwave {
 		z-index: 999;
 	}
 
+	#chat_tray {
+		background-image: 
+		url("../img/desktop.vaporwave/notif_left.png"),
+		url("../img/desktop.vaporwave/notif_right.png"),
+			url("../img/desktop.vaporwave/notif.png");
+		background-repeat: no-repeat;		
+		background-position: 
+			left,
+			right,
+			left;
+		background-size: 
+			5px 28px,
+			3px 28px,
+			100% 100%;
+		vertical-align: middle;
+		padding-left: 7px;
+		padding-top: 3px;
+		width: 22px;
+	}
+
+	#btn_tile {
+		background-image: url("../img/desktop.vaporwave/tile.png");
+	}
+
 	#chat_send {
 		width: 58px;
 		background-image: url("../img/desktop.vaporwave/start.png");

@@ -22,12 +22,28 @@
 	z-index: 999;
 }
 
+#chat_tray {
+	background-image: 
+	url("../img/desktop/notif_left.png"),
+		url("../img/desktop/notif.png");
+	background-repeat: no-repeat;		
+	background-position: left;
+	background-size: 
+		5px 30px,
+		100% 100%;
+	vertical-align: middle;
+	padding-left: 7px;
+	padding-top: 3px;
+	width: 22px;
+}
+
 .chat_bar_top {
 	top: 0;
 }
 
 #chat_send {
 	width: 100px;
+	user-select: none;
 	background-image: url("../img/desktop/start.png");
 	background-size: 100%;
 	background-repeat: no-repeat;
@@ -69,4 +85,15 @@
 	right: 0;
 	user-select: text;
 	-webkit-user-select: text;
+}
+
+.tray_btn {
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	margin: 2px 0px;
+}
+
+#btn_tile {
+	background-image: url("../img/desktop/tile.png");	
 }

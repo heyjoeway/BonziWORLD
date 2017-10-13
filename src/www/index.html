@@ -18,8 +18,7 @@
 	<meta name="msapplication-config" content="./favicons/browserconfig.xml">
 	<meta name="theme-color" content="#ffffff">
 	
-	<script src="./js/lib/easeljs-0.8.2.min.js"></script>
-	<script src="./js/lib/webgl-0.8.2.min.js"></script>
+	<script src="./js/lib/easeljs.min.js"></script>
 	<script src="./js/lib/preloadjs-0.6.2.min.js"></script>
 	<script src="./js/lib/jquery.min.js"></script>
 	<script src="./js/lib/seedrandom.min.js"></script>
@@ -37,18 +36,22 @@
 <body>
 	<div id="content">
 
-		<canvas id="bonzi_canvas" width="100" height="100"></canvas>
-
 		<div id="room_info">
 			Room ID - <span class="room_id">???</span><br>
 			<span id="room_public">This room is public.</span>
 			<span id="room_private">This room is private.</span>
 			<span id="room_owner"><br>You are the owner of this room.</span>
 		</div>
+
+		<canvas id="bonzi_canvas" width="100" height="100"></canvas>
+
 		
 		<table id="chat_bar"><tr>
 			<td id="chat_send">send</td>
 			<td id="chat_message_cont"><input id="chat_message" type="text" placeholder="Enter a message"></td>
+			<td id="chat_tray">
+				<div id="btn_tile" class="tray_btn"></div>
+			</td>
 		</tr></table>
 
 

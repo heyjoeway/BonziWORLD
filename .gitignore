@@ -1,14 +1,27 @@
-src/cca/platforms/android/**
 src/node_modules/**
 src/.sass-cache/**
-src/cca/www/**
-src/cca/config.xml
+
+src/cordova/platforms/**
+src/cordova/node_modules/**
+src/cordova/plugins/**
+src/cordova/www/**
+src/cordova/config.xml
+
 src/www/tmp/**
 build/**
 server/node_modules/**
 server/settings.json
 server/bans.json
 server/logs/**
+
+# IntelliJ IDEA files
+*.iml
+.idea
+
+*.sw[mnpcod]
+*.log
+*.tmp
+*.tmp.*
 
 # Compiled source #
 ###################
@@ -21,7 +34,7 @@ server/logs/**
 *.apk
 *.ap_
 *.es2015.js
-*.es2015.js.map
+*.map
 
 # files for the dex VM
 *.dex
