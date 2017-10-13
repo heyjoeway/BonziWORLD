@@ -195,8 +195,13 @@ config.md.www = {
 	options: {
 		wrapper: WWW_SRC + 'readme.template.html'
 	},
-	src: WWW_SRC + 'README.md',
-	dest: WWW_BUILD + "readme.html"
+	files: [{
+		src: WWW_SRC + 'README.md',
+		dest: WWW_BUILD + "readme.html"
+	}, {
+		src: WWW_SRC + 'memecrew.md',
+		dest: WWW_BUILD + "memecrew.html"
+	}]
 };
 
 grunt.initConfig(config);
@@ -204,7 +209,7 @@ grunt.initConfig(config);
 require('load-grunt-tasks')(grunt);
 
 grunt.registerTask('default', [
-	"test_www"
+	"test_cordova"
 ]);
 
 grunt.registerTask('www', [

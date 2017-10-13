@@ -6,6 +6,9 @@ $bonzi_height: 160px;
 	height: 100%;
 	position: absolute;
 	pointer-events: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
 	top: 0;
 	left: 0;
 }

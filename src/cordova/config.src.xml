@@ -32,4 +32,6 @@
         <allow-intent href="itms-apps:*" />
     </platform>
     <engine name="android" spec="~6.3.0" />
+    <plugin name="cordova-plugin-statusbar" spec="^2.2.3" />
+
 </widget>

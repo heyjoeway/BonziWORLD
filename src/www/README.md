@@ -68,7 +68,7 @@ Obviously no illegal shit. On top of that, there are a few limitations:
 	* Yes, the Navy Seals copypasta fits.
 * There is a 25 character limit on names.
 * A max of 8 people are allowed in a public lobby. After that, a new public room will be created. A max of 30 people are allowed in private lobbies.
-	* Yeah, I know I changed the limit down from 15. With the limited screen space and processing power on mobile, this was part of the reason things were running so shitty.
+	* (Yeah, I know I changed the limit down from 15. With the limited screen space and processing power on mobile, this was part of the reason things were running so shitty.)
 
 Remember that people can play YouTube videos whenever they want. **Keep your volume down, headphone users.** Chat rooms are for the most part unmoderated. If shit starts getting spambotty, I might start using my banhammer.
 
@@ -93,19 +93,25 @@ Remember that people can play YouTube videos whenever they want. **Keep your vol
 
 You guys are awesome. (And so are you, whoever's reading this!) There are also probably some others I forgot. If I remember you, I'll add you here.
 
-[shoutout1_url]: https://www.youtube.com/channel/UCpIJWYK1BB8LRA5eMZpQX-Q
+[memecrew_url]: /memecrew.html
+
 ## The Meme Crew
 
-* "those three shits who came on my app at 2 in the morning"
-* [FoenixGamer][shoutout1_url]
+[Moved the random shoutouts that people ask for to their own page.][memecrew_url] If you want to be listed here just email me and I'll probably put you in the next version.
 
-If you want to be listed here just email me and I'll probably put you in the next version.
+[github_url]: https://github.com/Joseph14078/BonziWORLD
+
+## GitHub
+
+Yep, BonziWORLD is on GitHub! Server and all! If you wanna poke around and see how things work, go check it out! License is MIT, so feel free to use the code for whatever. Just make sure you give proper credit.
+
+[GitHub Repository][github_url]
 
 ## Contact me
 
 ### bonzi@bonziworld.com
 
-Email me there with any comments, questions, or concerns. Or whatever else. Memes? Sure, throw those in too.
+Email me there with any comments, questions, or concerns. Or whatever else. Memes? Sure, throw those in too. Be warned that I'm notoriously awful at checking my email though.
 
 ## App Banners
 
