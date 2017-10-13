@@ -1,6 +1,6 @@
 {
   "name": "bonziworld",
-  "version": "1.4.3",
+  "version": "1.5.0",
   "dependencies": {
     "grunt": "~1.0.1"
   },

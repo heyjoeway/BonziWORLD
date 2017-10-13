@@ -70,3 +70,7 @@ server/logs/**
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Private files
+src/cordova/signing/**
+src/cordova/build.json
