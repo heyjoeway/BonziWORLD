@@ -27,6 +27,7 @@ function checkRoomEmpty(room) {
         roomsPublic.splice(publicIndex, 1);
     
     room.deconstruct();
+    delete rooms[room.rid];
     delete room;
 }
 
@@ -38,9 +39,19 @@ class Room {
     }
 
     deconstruct() {
-        delete this.rid;
-        delete this.prefs;
-        delete this.users;
+        try {
+            this.users.forEach((user) => {
+                user.disconnect();
+            });
+        } catch (e) {
+            log.info.log('warn', 'roomDeconstruct', {
+                e: e,
+                thisCtx: this
+            });
+        }
+        //delete this.rid;
+        //delete this.prefs;
+        //delete this.users;
     }
 
     isFull() {
@@ -255,7 +266,7 @@ class User {
             ip: this.getIp()
         });
 
-        socket.on('login', this.login.bind(this));
+       this.socket.on('login', this.login.bind(this));
     }
 
     getIp() {
@@ -307,11 +318,11 @@ class User {
 			}
 			// If room is full, fail login
 			else if (rooms[rid].isFull()) {
-				log.info.log('warn', 'loginFail', {
-					guid: guid,
+				log.info.log('debug', 'loginFail', {
+					guid: this.guid,
 					reason: "full"
 				});
-				return socket.emit("loginFail", {
+				return this.socket.emit("loginFail", {
 					reason: "full"
 				});
 			}
@@ -332,7 +343,7 @@ class User {
 		this.public.name = sanitize(data.name) || this.room.prefs.defaultName;
 
 		if (this.public.name.length > this.room.prefs.name_limit)
-			return socket.emit("loginFail", {
+			return this.socket.emit("loginFail", {
 				reason: "nameLength"
 			});
         
@@ -410,7 +421,7 @@ class User {
                     });
                 else commandFunc.apply(this, args);
             } else
-                socket.emit('commandFail', {
+                this.socket.emit('commandFail', {
                     reason: "runlevel"
                 });
         } catch(e) {
@@ -436,7 +447,7 @@ class User {
 			port = this.getPort();
 		} catch(e) { 
 			log.info.log('warn', "exception", {
-				guid: guid,
+				guid: this.guid,
 				exception: e
 			});
 		}
@@ -446,41 +457,15 @@ class User {
 			ip: ip,
 			port: port
 		});
+         
+        this.socket.broadcast.emit('leave', {
+            guid: this.guid
+        });
         
+        this.socket.removeAllListeners('talk');
+        this.socket.removeAllListeners('command');
+        this.socket.removeAllListeners('disconnect');
+
         this.room.leave(this);
-        
-		try {
-			// Delete user
-			delete usersPrivate[guid];
-			socket.broadcast.emit('leave', {
-				guid: guid
-			});
-
-			// Remove user from public list
-			delete rooms[room].usersPublic[guid];
-			// If room is empty
-			if (Object.keys(rooms[room].usersPublic).length === 0) {
-				log.info.log('debug', 'removeRoom', {
-					room: room
-				});
-				// Delete room
-				delete rooms[room];
-
-				var publicIndex = roomsPublic.indexOf(room);
-				if (publicIndex != -1) {
-					roomsPublic.splice(publicIndex, 1);
-				}
-
-            }
-            
-            this.socket.removeAllListeners('talk');
-            this.socket.removeAllListeners('command');
-            this.socket.removeAllListeners('disconnect');
-		} catch(e) { 
-			log.info.log('warn', "exception", {
-				guid: this.guid,
-				exception: e
-			});
-		}
     }
 }
