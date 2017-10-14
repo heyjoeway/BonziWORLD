@@ -22,13 +22,13 @@ config.clean.www_pre = {
 	options: {
 		force: true
 	},
-	src: [WWW_BUILD]
+	src: [WWW_BUILD + "*"]
 };
 config.clean.cordova_pre = {
 	options: {
 		force: true
 	},
-	src: [CORDOVA_WWW]
+	src: [CORDOVA_WWW + "*"]
 };
 config.clean.cordova = {
 	options: {
