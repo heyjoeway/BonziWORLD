@@ -8,7 +8,8 @@ class Bonzi {
 			name: "BonziBUDDY",
 			color: "purple",
 			speed: 175,
-			pitch: 50
+			pitch: 50,
+			voice: "en-us"
 		};
 		this.color = this.userPublic.color;
 		this.colorPrev;
@@ -257,8 +258,9 @@ class Bonzi {
 	}
 
 	stopSpeaking() {
+		this.goingToSpeak = false;
 		try {
-			BonziHandler.stop(this.speakID);
+			this.voiceSource.stop();
 		} catch(e) {}
 	}
 
@@ -384,20 +386,19 @@ class Bonzi {
 			[greentext ? "addClass" : "removeClass"]("bubble_greentext")
 			.css("display", "block");
 
-		// THANK YOU ESPEAK FOR FIXING ALL OF MESPEAK'S BROKEN BULLSHIT
-		// Sorta
-
 		this.stopSpeaking();
 
-		this.speakID = BonziHandler.speak(
-			say,
-			this.userPublic.speed,
-			this.userPublic.pitch,
-			(success) => {
-				if (success)
-					this.clearDialog()
-			}
-		);
+		this.goingToSpeak = true;
+
+		speak.play(say, {
+			"pitch": this.userPublic.pitch,
+			"speed": this.userPublic.speed
+		}, () => { // onended
+			this.clearDialog()
+		}, (source) => {
+			if (!this.goingToSpeak) source.stop();
+			this.voiceSource = source;
+		});
 	}
 
 	joke() { this.runSingleEvent(this.data.event_list_joke); }

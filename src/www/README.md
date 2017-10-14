@@ -7,7 +7,7 @@
 
 ## What the hell is this?
 
-BonziWORLD is a node.js and socket.io based chat client featuring everyone's most ~~hated~~ loved purple gorilla. The client also uses espeak.js to provide text-to-speech voices. Not exactly the original BonziBUDDY voice, but hey, it works.
+BonziWORLD is a node.js and socket.io based chat client featuring everyone's most ~~hated~~ loved purple gorilla. The client also uses speak.js to provide text-to-speech voices. Not exactly the original BonziBUDDY voice, but hey, it works.
 
 ## Why did you make this? Why WOULD you make this?
 
@@ -84,7 +84,7 @@ Remember that people can play YouTube videos whenever they want. **Keep your vol
 * Create.js (Easel.js && Preload.js)
 * jQuery
 * jquery-contextmenu
-* espeak.js
+* speak.js
 * seedrandom
 * realfavicongenerator.net
 * Apache Cordova

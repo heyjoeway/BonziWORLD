@@ -15,7 +15,6 @@ function loadTest() {
 
 	window.loadTestInterval = rInterval(function() {
 		try {
-			espeak.listVoices();
 			if (!loadDone.equals(loadNeeded)) throw "Not done loading.";
 			login();
 			loadTestInterval.clear();

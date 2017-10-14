@@ -1,5 +1,5 @@
-var espeak = new Espeak('./js/lib/espeak/espeak.worker.js');
-var auCtx = new (window.AudioContext || window.webkitAudioContext)();
+// var espeak = new Espeak('./js/lib/espeak/espeak.worker.js');
+// var auCtx = new (window.AudioContext || window.webkitAudioContext)();
 
 $(document).ready(function() {
 
@@ -81,56 +81,6 @@ window.BonziHandler = new (function() {
 
 	$(window).resize(this.resize.bind(this));
 
-	if (isMobileApp)
-		this.intervalFixAuCtx = setInterval((function() {
-			this.fixAuCtx();
-		}).bind(this), 1000);
-
-	// ========================================================================
-	// SPEECH
-	// ========================================================================
-
-	this.speakList = {};
-
-	this.speak = function(say, speed, pitch, callback) {
-		var obj = {
-			samples_queue: []
-		};
-
-		espeak.setVoice.apply(espeak, ["default", "en"]);
-		espeak.set_rate(speed || 175);
-		espeak.set_pitch(pitch || 50);
-		
-
-		obj.pusher = new PushAudioNode(auCtx, function() {}, callback, callback);
-		obj.pusher.connect(auCtx.destination);
-
-		espeak.synth(say, function(samples, events) {
-			if (!samples) {
-				obj.pusher.close();
-				return;
-			}
-			obj.pusher.push(new Float32Array(samples));
-		});
-
-		var id = s4()+s4();
-		BonziHandler.speakList[id] = obj;
-		return id;
-	};
-
-	this.stop = function(id) {
-		if (typeof this.speakList[id] != "undefined") {
-			var pusher = this.speakList[id].pusher;
-			if (pusher) {
-				pusher.disconnect();
-				pusher = null;
-			}
-			rtimeOut((function(id) {
-				delete this.speakList[id];
-			}).bind(this, id), 1000);
-		}
-	};
-
 	this.bonzisCheck = function() {
 		for (var i = 0; i < usersAmt; i++) {
 			var key = usersKeys[i];
@@ -145,41 +95,6 @@ window.BonziHandler = new (function() {
 					b.color = newColor;
 					b.updateSprite();
 				}
-			}
-		}
-	};
-
-	// UH OH
-	// HACK ALERT
-
-	this.checkAuCtx = function() {
-		var keys = Object.keys(this.speakList);
-		var allInitialized = true;
-		for (var i = 0; i < keys.length; i++) {
-			allInitialized =
-				allInitialized &&
-				this.speakList[keys[i]].pusher.initialized;
-			if (!allInitialized) return false;
-		}
-		return allInitialized; // true = good, false = glitched or none available
-	};
-
-	this.fixAuCtx = function() {
-		if (!BonziHandler.checkAuCtx()) {
-			setTimeout(this.refreshAuCtx, 1000);
-		}
-	};
-
-	this.refreshAuCtx = function() {
-		if (!BonziHandler.checkAuCtx()) {
-			auCtx.close();
-			auCtx = new (window.AudioContext || window.webkitAudioContext)();
-			var bonzisKeys = Object.keys(bonzis);
-			for (var i = 0; i < bonzisKeys.length; i++) {
-				var key = bonzisKeys[i];
-				var b = bonzis[key];
-				if (b.event.cur().type != "idle")
-					b.retry();
 			}
 		}
 	};
