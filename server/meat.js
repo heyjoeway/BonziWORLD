@@ -191,7 +191,7 @@ let userCommands = {
         this.socket.emit("vaporwave");
         this.room.emit("youtube", {
             guid: this.guid,
-            vid: "cU8HrO7XuiE"
+            vid: "aQkPcPqTq4M"
         });
     },
     "unvaporwave": function() {
