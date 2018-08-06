@@ -7,11 +7,11 @@
   "private": true,
   "license": "MIT",
   "dependencies": {
-    "express": "4.13.4",
+    "express": "^4.16.3",
     "fs-extra": "^0.30.0",
     "merge": "^1.2.0",
     "sanitize-html": "^1.12.0",
-    "socket.io": "^1.4.6",
+    "socket.io": "^2.1.1",
     "winston": "^2.2.0"
   }
 }
