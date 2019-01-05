@@ -21,7 +21,7 @@ exports.init = function() {
         if (settings.consoleOutput)
             transports.push(new (Winston.transports.Console)())
         
-        loggers[key] =  new (Winston.Logger)({
+        loggers[key] =  Winston.createLogger({
             transports: transports
         });
     }
