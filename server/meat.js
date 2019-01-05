@@ -278,6 +278,8 @@ class User {
     }
 
     login(data) {
+        if (typeof data != 'object') return; // Crash fix (issue #9)
+        
         if (this.private.login) return;
 
 		log.info.log('info', 'login', {
@@ -385,6 +387,12 @@ class User {
     }
 
     talk(data) {
+        if (typeof data != 'object') { // Crash fix (issue #9)
+            data = {
+                text: "HEY EVERYONE LOOK AT ME I'M TRYING TO SCREW WITH THE SERVER LMAO"
+            };
+        }
+
         log.info.log('debug', 'talk', {
             guid: this.guid,
             text: data.text
@@ -403,6 +411,8 @@ class User {
     }
 
     command(data) {
+        if (typeof data != 'object') return; // Crash fix (issue #9)
+
         var list = data.list;
         var command = list[0].toLowerCase();
         var args = list.slice(1);
