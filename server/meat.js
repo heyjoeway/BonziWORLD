@@ -413,16 +413,19 @@ class User {
     command(data) {
         if (typeof data != 'object') return; // Crash fix (issue #9)
 
-        var list = data.list;
-        var command = list[0].toLowerCase();
-        var args = list.slice(1);
-
-        log.info.log('debug', command, {
-            guid: this.guid,
-            args: args
-        });
-
+        var command;
+        var args;
+        
         try {
+            var list = data.list;
+            command = list[0].toLowerCase();
+            args = list.slice(1);
+    
+            log.info.log('debug', command, {
+                guid: this.guid,
+                args: args
+            });
+
             if (this.private.runlevel >= (this.room.prefs.runlevel[command] || 0)) {
                 let commandFunc = userCommands[command];
                 if (commandFunc == "passthrough")

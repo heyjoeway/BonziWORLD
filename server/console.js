@@ -63,12 +63,11 @@ let commands = {
 
 exports.listen = function() {
     process.openStdin().addListener("data", function(input) {
-        let list = input.toString().trim().split(" ");
-        let command = list[0].toLowerCase();
-        let args = list.slice(1);
-        let argsString = args.join(" ");
-
         try {
+            let list = input.toString().trim().split(" ");
+            let command = list[0].toLowerCase();
+            let args = list.slice(1);
+            let argsString = args.join(" ");
             commands[command].function(args);
         } catch(e) {
             console.log("Invalid command.");
