@@ -198,9 +198,6 @@ config.md.www = {
 	files: [{
 		src: WWW_SRC + 'README.md',
 		dest: WWW_BUILD + "readme.html"
-	}, {
-		src: WWW_SRC + 'memecrew.md',
-		dest: WWW_BUILD + "memecrew.html"
 	}]
 };
 

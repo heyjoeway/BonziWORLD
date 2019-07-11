@@ -92,34 +92,3 @@ Remember that people can play YouTube videos whenever they want. **Keep your vol
 * scss/sass
 
 You guys are awesome. (And so are you, whoever's reading this!) There are also probably some others I forgot. If I remember you, I'll add you here.
-
-[memecrew_url]: /memecrew.html
-
-## The Meme Crew
-
-[Moved the random shoutouts that people ask for to their own page.][memecrew_url] If you want to be listed here just email me and I'll probably put you in the next version.
-
-[github_url]: https://github.com/Joseph14078/BonziWORLD
-
-## GitHub
-
-Yep, BonziWORLD is on GitHub! Server and all! If you wanna poke around and see how things work, go check it out! License is MIT, so feel free to use the code for whatever. Just make sure you give proper credit.
-
-[GitHub Repository][github_url]
-
-## Contact me
-
-### bonzi@bonziworld.com
-
-Email me there with any comments, questions, or concerns. Or whatever else. Memes? Sure, throw those in too. Be warned that I'm notoriously awful at checking my email though.
-
-## App Banners
-
-[pc_banner]: ./img/app/desktop.png
-![Open on PC for the best experience. (bonziworld.com)][pc_banner]
-
-[gplay_banner]: ./img/app/google-play-badge.png
-[gplay_url]: https://play.google.com/store/apps/details?id=com.jojudge.bonziworld
-[![Get it on Google Play.][gplay_banner]][gplay_url]
-
-Google Play and the Google Play logo are trademarks of Google Inc.
